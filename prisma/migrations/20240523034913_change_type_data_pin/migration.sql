@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "wallets" ALTER COLUMN "pin" SET DATA TYPE TEXT;
