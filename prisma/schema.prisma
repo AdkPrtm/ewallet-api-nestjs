@@ -25,28 +25,163 @@ model Otp {
 }
 
 model User {
-  id             String   @id @default(uuid())
-  firstName      String   @map("first_name") @db.VarChar(50)
-  lastName       String   @map("last_name") @db.VarChar(50)
-  username       String   @unique @db.VarChar(50)
-  email          String   @unique @db.VarChar(100)
+  id             String              @id @default(uuid())
+  firstName      String              @map("first_name") @db.VarChar(50)
+  lastName       String              @map("last_name") @db.VarChar(50)
+  username       String              @unique @db.VarChar(50)
+  email          String              @unique @db.VarChar(100)
   password       String
-  verified       Boolean  @default(false)
-  profilePicture String   @map("profile_picture")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  verified       Boolean             @default(false)
+  profilePicture String              @map("profile_picture")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
   Wallet         Wallet?
+  senderFK       TransferHistories[] @relation("SenderFK")
+  receiverFK     TransferHistories[] @relation("ReceiverFK")
 
   @@map("users")
 }
 
 model Wallet {
-  id         String @id @default(uuid())
-  balance    Float  @default(0)
+  id         String   @id @default(uuid())
+  balance    Float    @default(0)
   pin        String
-  user       User   @relation(fields: [userId], references: [id])
-  userId     String @unique
-  cardNumber String @unique
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique @map("user_id")
+  cardNumber String   @unique @map("card_number")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("wallets")
+}
+
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+}
+
+model OperatorCard {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  status    StatusEnum
+  thumbnail String
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  DataPlan  DataPlan[]
+
+  @@map("operator_cards")
+}
+
+model DataPlan {
+  id                String              @id @default(uuid())
+  name              String              @unique
+  price             Float
+  OperatordCard     OperatorCard        @relation(fields: [operatorCardId], references: [id])
+  operatorCardId    String              @map("operator_card_id")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  DataPlanHistories DataPlanHistories[]
+
+  @@map("data_plans")
+}
+
+model DataPlanHistories {
+  id            String      @id @default(uuid())
+  dataPlan      DataPlan    @relation(fields: [dataPlanId], references: [id])
+  dataPlanId    String      @map("data_plan_id")
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String      @map("transaction_id")
+  phoneNumber   String      @map("phone_number")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@map("data_plan_histories")
+}
+
+model PaymentMethod {
+  id          String        @id @default(uuid())
+  name        String
+  code        String        @unique
+  thumbnail   String
+  status      StatusEnum
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  Transaction Transaction[]
+
+  @@map("payment_methods")
+}
+
+enum ActionTransaction {
+  CR
+  DR
+}
+
+model TransactionType {
+  id          String            @id @default(uuid())
+  name        String
+  code        String            @unique
+  action      ActionTransaction
+  thumbnail   String
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  Transaction Transaction[]
+
+  @@map("transaction_types")
+}
+
+model Transaction {
+  id                String              @id @default(uuid())
+  transactionType   TransactionType     @relation(fields: [transactionTypeId], references: [id])
+  transactionTypeId String              @map("transaction_type_id")
+  paymentMethod     PaymentMethod       @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId   String              @map("payment_method_id")
+  productData       Product             @relation(fields: [productId], references: [id])
+  productId         String              @map("product_id")
+  amount            Float
+  transactionCode   String              @map("transaction_code")
+  description       String?
+  status            String
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  DataPlanHistories DataPlanHistories[]
+
+  @@map("transactions")
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  thumbnail   String
+  price       Float
+  status      StatusEnum
+  description String?
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  Transaction Transaction[]
+
+  @@map("products")
+}
+
+model TransferHistories {
+  id              String   @id @default(uuid())
+  sender          User     @relation("SenderFK", fields: [senderId], references: [id])
+  senderId        String   @map("sender_id")
+  receiver        User     @relation("ReceiverFK", fields: [receiverId], references: [id])
+  receiverId      String   @map("receiver_id")
+  transactionCode String   @map("transaction_code")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("transfer_histories")
+}
+
+model Tip {
+  id        String   @id @default(uuid())
+  title     String
+  url       String   @unique
+  thumbnail String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tips")
 }
