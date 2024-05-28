@@ -21,7 +21,5 @@ import { TransactionModule } from './transaction/transaction.module';
     TopupModule,
     TransactionModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
