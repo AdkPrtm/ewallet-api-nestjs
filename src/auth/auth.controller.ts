@@ -33,8 +33,11 @@ export class AuthController {
 
   @Post('/verificationotp')
   @HttpCode(HttpStatus.OK)
-  async verificationOTP(@Body() request: VerificationOTPRequest) {
-    await this.authService.verificationOTPRegisterService(request);
+  async verificationOTP(
+    @Auth() userInfo: User,
+    @Body() request: VerificationOTPRequest
+  ) {
+    await this.authService.verificationOTPRegisterService(request, userInfo.email);
     return {
       message: 'Successfully verified',
     };

@@ -182,28 +182,28 @@ export class AuthService {
     return transction;
   }
 
-  async sendOTPRegisterService(userInfo: string): Promise<void> {
+  async sendOTPRegisterService(emailUser: string): Promise<void> {
     const haveRequestBefore = await this.prismaService.otp.findUnique({
-      where: { email: userInfo },
+      where: { email: emailUser },
     });
     const otp = generateRandomString(6);
 
     if (!haveRequestBefore) {
       const createRequestOtp = await this.prismaService.otp.create({
         data: {
-          email: userInfo,
+          email: emailUser,
           OTP: otp,
           expiresAt: addMinutes(Date.now(), 5),
         },
       });
       if (!createRequestOtp)
         throw new HttpException('Something went wrong', 500);
-      this.mailService.sendMailOTPRegister(userInfo, otp);
+      this.mailService.sendMailOTPRegister(emailUser, otp);
     } else {
       if (!isAfter(Date.now(), addMinutes(haveRequestBefore.createdAt, 1)))
         throw new HttpException('Waiting for cooling down', 400);
       const updateRequestOtp = await this.prismaService.otp.update({
-        where: { email: userInfo },
+        where: { email: emailUser },
         data: {
           OTP: otp,
           expiresAt: addMinutes(Date.now(), 5),
@@ -211,15 +211,16 @@ export class AuthService {
       });
       if (!updateRequestOtp)
         throw new HttpException('Something went wrong', 500);
-      this.mailService.sendMailOTPRegister(userInfo, otp);
+      this.mailService.sendMailOTPRegister(emailUser, otp);
     }
   }
 
   async verificationOTPRegisterService(
     request: VerificationOTPRequest,
+    emailUser: string
   ): Promise<void> {
     const dataMailRequest = await this.prismaService.otp.findUnique({
-      where: { email: request.email },
+      where: { email: emailUser },
     });
 
     if (!dataMailRequest) throw new HttpException('Data not found', 400);
@@ -231,7 +232,7 @@ export class AuthService {
       throw new HttpException('OTP not match', 400);
 
     const updateUser = await this.prismaService.user.update({
-      where: { email: request.email },
+      where: { email: emailUser },
       data: { verified: true },
     });
 

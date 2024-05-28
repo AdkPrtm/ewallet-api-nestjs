@@ -10,7 +10,6 @@ export class CheckDataExistsRequest {
  * For VerificationOTPRequestBody
  */
 export class VerificationOTPRequest {
-  email: string;
   otp: string;
 }
 
