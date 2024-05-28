@@ -9,7 +9,6 @@ import {
   LoginRequest,
   CheckDataExistsRequest,
   CheckDataExistsResponse,
-  OTPRequest,
   VerificationOTPRequest,
 } from '../model/auth.model';
 import { AuthValidation } from '../utils/validation/auth.validation';
@@ -183,28 +182,28 @@ export class AuthService {
     return transction;
   }
 
-  async sendOTPRegisterService(request: OTPRequest): Promise<void> {
+  async sendOTPRegisterService(userInfo: string): Promise<void> {
     const haveRequestBefore = await this.prismaService.otp.findUnique({
-      where: { email: request.email },
+      where: { email: userInfo },
     });
     const otp = generateRandomString(6);
 
     if (!haveRequestBefore) {
       const createRequestOtp = await this.prismaService.otp.create({
         data: {
-          email: request.email,
+          email: userInfo,
           OTP: otp,
           expiresAt: addMinutes(Date.now(), 5),
         },
       });
       if (!createRequestOtp)
         throw new HttpException('Something went wrong', 500);
-      this.mailService.sendMailOTPRegister(request.email, otp);
+      this.mailService.sendMailOTPRegister(userInfo, otp);
     } else {
       if (!isAfter(Date.now(), addMinutes(haveRequestBefore.createdAt, 1)))
         throw new HttpException('Waiting for cooling down', 400);
       const updateRequestOtp = await this.prismaService.otp.update({
-        where: { email: request.email },
+        where: { email: userInfo },
         data: {
           OTP: otp,
           expiresAt: addMinutes(Date.now(), 5),
@@ -212,7 +211,7 @@ export class AuthService {
       });
       if (!updateRequestOtp)
         throw new HttpException('Something went wrong', 500);
-      this.mailService.sendMailOTPRegister(request.email, otp);
+      this.mailService.sendMailOTPRegister(userInfo, otp);
     }
   }
 

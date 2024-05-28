@@ -2,15 +2,16 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   CheckDataExistsRequest,
   LoginRequest,
-  OTPRequest,
   RegisterRequest,
   VerificationOTPRequest,
 } from '../model/auth.model';
 import { AuthService } from './auth.service';
+import { Auth } from 'src/common/auth.decorator';
+import { User } from '@prisma/client';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('/isdataexists')
   @HttpCode(HttpStatus.OK)
@@ -21,8 +22,10 @@ export class AuthController {
 
   @Post('/requestotp')
   @HttpCode(HttpStatus.CREATED)
-  async sendOTP(@Body() request: OTPRequest) {
-    await this.authService.sendOTPRegisterService(request);
+  async sendOTP(
+    @Auth() userInfo: User,
+  ) {
+    await this.authService.sendOTPRegisterService(userInfo.email);
     return {
       message: 'OTP sent successfully',
     };

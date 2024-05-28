@@ -7,13 +7,6 @@ export class CheckDataExistsRequest {
 }
 
 /**
- * For OTPRequestBody
- */
-export class OTPRequest {
-  email: string;
-}
-
-/**
  * For VerificationOTPRequestBody
  */
 export class VerificationOTPRequest {
