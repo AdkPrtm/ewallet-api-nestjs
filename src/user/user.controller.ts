@@ -25,7 +25,7 @@ export class UserController {
 
   @Get('/:username')
   @HttpCode(HttpStatus.OK)
-  async geUserByUsername(@Param() username: string) {
+  async geUserByUsername(@Param('username') username: string) {
     const result =
       await this.userService.getDataUserByUsernameService(username);
     return result;
