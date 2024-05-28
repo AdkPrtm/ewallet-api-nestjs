@@ -56,20 +56,32 @@ async function main() {
         data: [
             {
                 name: 'Bank BNI',
-                code: 'bni_va',
+                code: 'BNI',
                 thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/bni.png',
                 status: 'ACTIVE',
             },
             {
                 name: 'Bank BCA',
-                code: 'bca_va',
+                code: 'BCA',
                 thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/bca.png',
                 status: 'ACTIVE',
             },
             {
-                name: 'QRIS',
-                code: 'qris',
-                thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/qris.png',
+                name: 'DANA',
+                code: 'ID_DANA',
+                thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/dana.png',
+                status: 'ACTIVE',
+            },
+            {
+                name: 'LinkAja',
+                code: 'ID_LINKAJA',
+                thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/linkaja.png',
+                status: 'ACTIVE',
+            },
+            {
+                name: 'ShopeePay',
+                code: 'ID_SHOPEEPAY',
+                thumbnail: 'https://cjjcrnpxqseybmskoqhh.supabase.co/storage/v1/object/public/ewalletapp/bankImage/shopeepay.png',
                 status: 'ACTIVE',
             },
         ],

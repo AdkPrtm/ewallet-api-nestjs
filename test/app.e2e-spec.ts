@@ -19,13 +19,13 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/api/auth/isdataexists')
       .send({
-        "username": "test",
-        "email": "test@example.com"
+        username: 'test',
+        email: 'test@example.com',
       })
       .expect(200)
       .expect({
         is_email_exists: false,
-        is_username_exists: false
+        is_username_exists: false,
       });
   });
 });

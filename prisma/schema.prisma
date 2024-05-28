@@ -38,6 +38,7 @@ model User {
   Wallet         Wallet?
   senderFK       TransferHistories[] @relation("SenderFK")
   receiverFK     TransferHistories[] @relation("ReceiverFK")
+  Transaction    Transaction[]
 
   @@map("users")
 }
@@ -131,14 +132,16 @@ model TransactionType {
 
 model Transaction {
   id                String              @id @default(uuid())
+  user              User                @relation(fields: [userId], references: [id])
+  userId            String
   transactionType   TransactionType     @relation(fields: [transactionTypeId], references: [id])
   transactionTypeId String              @map("transaction_type_id")
   paymentMethod     PaymentMethod       @relation(fields: [paymentMethodId], references: [id])
   paymentMethodId   String              @map("payment_method_id")
-  productData       Product             @relation(fields: [productId], references: [id])
-  productId         String              @map("product_id")
+  productData       Product?            @relation(fields: [productId], references: [id])
+  productId         String?             @map("product_id")
   amount            Float
-  transactionCode   String              @map("transaction_code")
+  transactionCode   String              @unique @map("transaction_code")
   description       String?
   status            String
   createdAt         DateTime            @default(now()) @map("created_at")

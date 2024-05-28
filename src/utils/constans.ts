@@ -1,11 +1,14 @@
-import Mail from "nodemailer/lib/mailer";
+import Mail from 'nodemailer/lib/mailer';
 
-export function SendMailOTPRegister(emailTo: string, otp: string): Mail.Options {
-    return {
-        from: '"Ewallet App" noreply@andhikawidiarto.my.id',
-        to: emailTo,
-        subject: `${otp} is your verification code`,
-        html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+export function SendMailOTPRegister(
+  emailTo: string,
+  otp: string,
+): Mail.Options {
+  return {
+    from: '"Ewallet App" noreply@andhikawidiarto.my.id',
+    to: emailTo,
+    subject: `${otp} is your verification code`,
+    html: `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
             <div style="margin:50px auto;width:70%;padding:20px 0">
             <div style="border-bottom:1px solid #eee">
                 <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Ewallet App</a>
@@ -22,5 +25,8 @@ export function SendMailOTPRegister(emailTo: string, otp: string): Mail.Options 
             </div>
             </div>
         </div>`,
-    }
+  };
 }
+
+export const ewalletCode = ['ID_DANA', 'ID_SHOPEEPAY', 'ID_LINKAJA'];
+export const bankVACode = ['BCA', 'BNI'];
