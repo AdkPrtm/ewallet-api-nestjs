@@ -17,7 +17,7 @@ export class UserService {
     private prismaService: PrismaService,
     private validationService: ValidationService,
     private supabaseService: SupabaseService,
-  ) {}
+  ) { }
 
   async getDataUserService(user: User): Promise<GetUserResponseBodyResponse> {
     if (!user.id) throw new HttpException('Something went wrong', 400);
@@ -44,13 +44,14 @@ export class UserService {
   async getDataUserByUsernameService(
     username: string,
   ): Promise<GetUserByUsernameBodyResponse> {
+    const dataReq = { username }
     const requestGetUsername = this.validationService.validate(
       UserValidation.GETDATAUSERBYUSERNAME,
-      username,
+      dataReq,
     );
 
     const user = await this.prismaService.user.findUnique({
-      where: { username: requestGetUsername },
+      where: { username: requestGetUsername.username },
     });
     if (!user) throw new HttpException('User not found', 400);
 
