@@ -8,8 +8,11 @@ async function bootstrap() {
 
   const logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
   app.useLogger(logger);
+  
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.enableShutdownHooks();
+
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();

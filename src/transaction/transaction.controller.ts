@@ -7,12 +7,14 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { Auth } from 'src/common/auth.decorator';
 import { User } from '@prisma/client';
 import { GetQueryParamRequestQuery } from 'src/model/tips.dto';
 import { TransferRequestBody } from 'src/model/transaction.model';
+import { VerifiedGuard } from 'src/common/verified.guard';
 
 @Controller('api/transaction')
 export class TransactionController {
@@ -49,6 +51,7 @@ export class TransactionController {
   }
 
   @Post()
+  @UseGuards(VerifiedGuard)
   @HttpCode(HttpStatus.CREATED)
   async transferBalance(@Auth() user: User, @Body() body: TransferRequestBody) {
     const res = await this.transactionService.transferBalanceService(
