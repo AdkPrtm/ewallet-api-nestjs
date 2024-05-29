@@ -10,8 +10,8 @@ import { TipsValidation } from 'src/utils/validation/tips.validation';
 @Injectable()
 export class TipsService {
   constructor(
-    private prismaService: PrismaService,
-    private validationService: ValidationService,
+    private readonly prismaService: PrismaService,
+    private readonly validationService: ValidationService,
   ) {}
 
   async getTips(

@@ -13,8 +13,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class WalletService {
   constructor(
-    private prismaService: PrismaService,
-    private validatorService: ValidationService,
+    private readonly prismaService: PrismaService,
+    private readonly validatorService: ValidationService,
   ) {}
 
   private async checkDataWallet(userId: string): Promise<Wallet> {

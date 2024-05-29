@@ -22,12 +22,12 @@ import { MailService } from '../common/mail.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private validationService: ValidationService,
-    // @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger,
-    private prismaService: PrismaService,
-    private supabaseService: SupabaseService,
-    private jwtService: JwtService,
-    private mailService: MailService,
+    private readonly validationService: ValidationService,
+    // @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    private readonly prismaService: PrismaService,
+    private readonly supabaseService: SupabaseService,
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async checkDataExists(
@@ -217,7 +217,7 @@ export class AuthService {
 
   async verificationOTPRegisterService(
     request: VerificationOTPRequest,
-    emailUser: string
+    emailUser: string,
   ): Promise<void> {
     const dataMailRequest = await this.prismaService.otp.findUnique({
       where: { email: emailUser },

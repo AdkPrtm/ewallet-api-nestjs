@@ -14,10 +14,10 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
-    private prismaService: PrismaService,
-    private validationService: ValidationService,
-    private supabaseService: SupabaseService,
-  ) { }
+    private readonly prismaService: PrismaService,
+    private readonly validationService: ValidationService,
+    private readonly supabaseService: SupabaseService,
+  ) {}
 
   async getDataUserService(user: User): Promise<GetUserResponseBodyResponse> {
     if (!user.id) throw new HttpException('Something went wrong', 400);
@@ -44,7 +44,7 @@ export class UserService {
   async getDataUserByUsernameService(
     username: string,
   ): Promise<GetUserByUsernameBodyResponse> {
-    const dataReq = { username }
+    const dataReq = { username };
     const requestGetUsername = this.validationService.validate(
       UserValidation.GETDATAUSERBYUSERNAME,
       dataReq,

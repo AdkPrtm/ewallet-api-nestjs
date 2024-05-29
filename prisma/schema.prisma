@@ -141,12 +141,13 @@ model Transaction {
   productData       Product?            @relation(fields: [productId], references: [id])
   productId         String?             @map("product_id")
   amount            Float
-  transactionCode   String              @unique @map("transaction_code")
+  transactionCode   String              @map("transaction_code")
   description       String?
   status            String
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @updatedAt @map("updated_at")
   DataPlanHistories DataPlanHistories[]
+  TransferHistories TransferHistories[]
 
   @@map("transactions")
 }
@@ -166,14 +167,16 @@ model Product {
 }
 
 model TransferHistories {
-  id              String   @id @default(uuid())
-  sender          User     @relation("SenderFK", fields: [senderId], references: [id])
-  senderId        String   @map("sender_id")
-  receiver        User     @relation("ReceiverFK", fields: [receiverId], references: [id])
-  receiverId      String   @map("receiver_id")
-  transactionCode String   @map("transaction_code")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id              String      @id @default(uuid())
+  sender          User        @relation("SenderFK", fields: [senderId], references: [id])
+  senderId        String      @map("sender_id")
+  receiver        User        @relation("ReceiverFK", fields: [receiverId], references: [id])
+  receiverId      String      @map("receiver_id")
+  transaction     Transaction @relation(fields: [transactionId], references: [id])
+  transactionId   String
+  transactionCode String      @unique @map("transaction_code")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
 
   @@map("transfer_histories")
 }

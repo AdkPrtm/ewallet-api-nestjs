@@ -1,7 +1,7 @@
 /**
- * For GetTransactionResponseBody
+ * For GetTransactionData
  */
-export class GetTransactionResponseBody {
+export class GetTransactionData {
   id: string;
   amount: number;
   transaction_name: string;
@@ -9,6 +9,31 @@ export class GetTransactionResponseBody {
   transaction_thumbnail: string;
 }
 
+export class GetTransferData {
+  first_name: string;
+  last_name: string;
+  username: string;
+  verified: boolean;
+  profile_picture: string;
+}
+
+/**
+ * For GetTransactionResponseBody
+ */
+export class GetTransactionResponseBody {
+  data: GetTransactionData[];
+  current_page: number;
+  last_page: number;
+}
+
+/**
+ * For GetTransferResponseBody
+ */
+export class GetTransferResponseBody {
+  data: GetTransferData[];
+  current_page: number;
+  last_page: number;
+}
 /**
  * For TransferRequestBody
  */

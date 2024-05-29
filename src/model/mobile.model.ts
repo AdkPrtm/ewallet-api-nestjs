@@ -1,13 +1,5 @@
 import { DataPlan, OperatorCard, StatusEnum } from '@prisma/client';
 
-/**
- * For GetOperatorRequestQuery
- */
-export class GetOperatorRequestQuery {
-  limit: number;
-  page: number;
-}
-
 class DataPlanClass implements DataPlan {
   id: string;
   name: string;

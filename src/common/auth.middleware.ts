@@ -1,13 +1,18 @@
-import { HttpException, Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NestMiddleware,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-    private jwtService: JwtService,
-    private prismaService: PrismaService,
-  ) { }
+    private readonly jwtService: JwtService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   async use(req: any, res: any, next: (error?: Error | any) => void) {
     const token = this.extractTokenFromHeader(req);
@@ -15,7 +20,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     try {
       const payload = this.jwtService.verify(token);
-      
+
       const user = await this.prismaService.user.findUnique({
         where: { id: payload.id },
       });

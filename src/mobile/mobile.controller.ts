@@ -21,10 +21,7 @@ export class MobileController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('page', ParseIntPipe) page: number,
   ) {
-    const data: GetQueryParamRequestQuery = {
-      limit: limit,
-      page: page,
-    };
+    const data: GetQueryParamRequestQuery = { limit, page };
     return this.mobileService.getOperatorMobile(data);
   }
 

@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import {
   CheckDataExistsRequest,
   LoginRequest,
@@ -11,7 +18,7 @@ import { User } from '@prisma/client';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('/isdataexists')
   @HttpCode(HttpStatus.OK)
@@ -22,10 +29,9 @@ export class AuthController {
 
   @Post('/requestotp')
   @HttpCode(HttpStatus.CREATED)
-  async sendOTP(
-    @Auth() userInfo: User,
-  ) {
-    if (userInfo.verified) throw new HttpException('Something is wrong', HttpStatus.BAD_REQUEST)
+  async sendOTP(@Auth() userInfo: User) {
+    if (userInfo.verified)
+      throw new HttpException('Something is wrong', HttpStatus.BAD_REQUEST);
     await this.authService.sendOTPRegisterService(userInfo.email);
     return {
       message: 'OTP sent successfully',
@@ -36,10 +42,14 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async verificationOTP(
     @Auth() userInfo: User,
-    @Body() request: VerificationOTPRequest
+    @Body() request: VerificationOTPRequest,
   ) {
-    if (userInfo.verified) throw new HttpException('Something is wrong', HttpStatus.BAD_REQUEST)
-    await this.authService.verificationOTPRegisterService(request, userInfo.email);
+    if (userInfo.verified)
+      throw new HttpException('Something is wrong', HttpStatus.BAD_REQUEST);
+    await this.authService.verificationOTPRegisterService(
+      request,
+      userInfo.email,
+    );
     return {
       message: 'Successfully verified',
     };

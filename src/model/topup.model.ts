@@ -1,5 +1,5 @@
 /**
- * For GetQueryParamRequestQuery
+ * For TopupRequestBody
  */
 export class TopupRequestBody {
   payment_code: string;

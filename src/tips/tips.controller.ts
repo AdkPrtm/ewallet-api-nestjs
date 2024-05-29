@@ -10,10 +10,7 @@ export class TipsController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('page', ParseIntPipe) page: number,
   ) {
-    const data: GetQueryParamRequestQuery = {
-      limit: limit,
-      page: page,
-    };
+    const data: GetQueryParamRequestQuery = { limit, page };
     const dataResult = await this.tipsService.getTips(data);
     return dataResult;
   }
