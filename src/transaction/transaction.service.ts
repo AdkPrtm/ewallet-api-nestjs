@@ -158,7 +158,7 @@ export class TransactionService {
     if (!transactionType || !paymentMethod)
       throw new HttpException('Something went wrong', HttpStatus.BAD_REQUEST);
 
-    if (senderUser.user.username && receiverUser.username)
+    if (senderUser.user.username == receiverUser.username)
       throw new HttpException(
         'You cant transfer to yourself',
         HttpStatus.BAD_REQUEST,
