@@ -47,8 +47,8 @@ export class AuthService {
     });
 
     return {
-      is_email_exists: !!checkAvaiUsernamelUser,
-      is_username_exists: !!checkAvaiEmaillUser,
+      is_email_exists: !!checkAvaiEmaillUser,
+      is_username_exists: !!checkAvaiUsernamelUser,
     };
   }
 
