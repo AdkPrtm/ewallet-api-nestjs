@@ -19,7 +19,7 @@ export class TransactionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly validationService: ValidationService,
-  ) {}
+  ) { }
 
   async getTransactionService(
     userInfo: string,
@@ -94,13 +94,28 @@ export class TransactionService {
       (requestTransferHistories.page - 1) * requestTransferHistories.limit;
 
     const allTx = await this.prismaService.transferHistories.findMany({
-      skip: skip,
-      take: requestTransferHistories.limit,
-      where: { senderId: userInfo },
-      include: { receiver: true },
-      orderBy: {
-        createdAt: 'desc',
+      where: {
+        senderId: userInfo,
       },
+      select: {
+        receiver: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            username: true,
+            verified: true,
+            profilePicture: true,
+          },
+        },
+        receiverId: true,
+      },
+      distinct: ['receiverId'],
+      orderBy: {
+        createdAt: 'asc',
+      },
+      take: requestTransferHistories.limit,
+      skip: skip
     });
 
     const totalCount = await this.prismaService.tip.count();
