@@ -19,9 +19,13 @@ export class WebhookService {
           data: { status: status },
         });
 
+        const wallet = await prisma.wallet.findUnique({
+          where: { userId: txData.userId },
+        });
+
         await prisma.wallet.update({
           where: { userId: txData.userId },
-          data: { balance: txData.amount },
+          data: { balance: txData.amount + wallet.balance },
         });
         return txData;
       },

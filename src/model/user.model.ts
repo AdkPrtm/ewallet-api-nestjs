@@ -17,6 +17,8 @@ export class GetUserResponseBodyResponse {
  */
 export class GetUserByUsernameBodyResponse {
   id: string;
+  first_name: string;
+  last_name: string;
   username: string;
   verified: boolean;
   profile_picture: string;

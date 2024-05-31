@@ -22,7 +22,7 @@ export class TopupService {
     private httpService: HttpService,
     private prismaService: PrismaService,
     private validationService: ValidationService,
-  ) { }
+  ) {}
 
   async makeTopup(
     request: TopupRequestBody,
@@ -154,9 +154,12 @@ export class TopupService {
   }
 
   async getPaymentMethod() {
-    const paymentMethodData = await this.prismaService.paymentMethod.findMany({})
+    const paymentMethodData = await this.prismaService.paymentMethod.findMany(
+      {},
+    );
 
-    if (!paymentMethodData) throw new HttpException('Something went wrong', 500)
+    if (!paymentMethodData)
+      throw new HttpException('Something went wrong', 500);
 
     return paymentMethodData;
   }

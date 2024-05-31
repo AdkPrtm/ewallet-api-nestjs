@@ -17,7 +17,7 @@ export class UserService {
     private readonly prismaService: PrismaService,
     private readonly validationService: ValidationService,
     private readonly supabaseService: SupabaseService,
-  ) { }
+  ) {}
 
   async getDataUserService(user: User): Promise<GetUserResponseBodyResponse> {
     if (!user.id) throw new HttpException('Something went wrong', 400);
@@ -43,7 +43,7 @@ export class UserService {
 
   async getDataUserByUsernameService(
     username: string,
-    userId: string
+    userId: string,
   ): Promise<GetUserByUsernameBodyResponse[]> {
     const dataReq = { username };
     const requestGetUsername = this.validationService.validate(
@@ -79,8 +79,8 @@ export class UserService {
         username: user.username,
         verified: user.verified,
         profile_picture: user.profilePicture,
-      }
-    })
+      };
+    });
 
     return data;
   }

@@ -7,6 +7,6 @@ export class VerifiedGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const user = context.switchToHttp().getRequest().user;
-    return user.verified
+    return user.verified;
   }
 }

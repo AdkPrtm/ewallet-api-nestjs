@@ -19,7 +19,7 @@ export class TransactionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly validationService: ValidationService,
-  ) { }
+  ) {}
 
   async getTransactionService(
     userInfo: string,
@@ -115,7 +115,7 @@ export class TransactionService {
         createdAt: 'asc',
       },
       take: requestTransferHistories.limit,
-      skip: skip
+      skip: skip,
     });
 
     const totalCount = await this.prismaService.tip.count();
