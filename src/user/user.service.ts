@@ -17,7 +17,7 @@ export class UserService {
     private readonly prismaService: PrismaService,
     private readonly validationService: ValidationService,
     private readonly supabaseService: SupabaseService,
-  ) {}
+  ) { }
 
   async getDataUserService(user: User): Promise<GetUserResponseBodyResponse> {
     if (!user.id) throw new HttpException('Something went wrong', 400);
@@ -43,25 +43,46 @@ export class UserService {
 
   async getDataUserByUsernameService(
     username: string,
-  ): Promise<GetUserByUsernameBodyResponse> {
+    userId: string
+  ): Promise<GetUserByUsernameBodyResponse[]> {
     const dataReq = { username };
     const requestGetUsername = this.validationService.validate(
       UserValidation.GETDATAUSERBYUSERNAME,
       dataReq,
     );
 
-    const user = await this.prismaService.user.findUnique({
-      where: { username: requestGetUsername.username },
+    const users = await this.prismaService.user.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        verified: true,
+        profilePicture: true,
+      },
+      where: {
+        username: {
+          contains: requestGetUsername.username,
+        },
+        NOT: {
+          id: userId,
+        },
+      },
     });
-    if (!user) throw new HttpException('User not found', 400);
+    if (!users) throw new HttpException('User not found', 400);
 
-    const result = {
-      id: user.firstName,
-      username: user.username,
-      verified: user.verified,
-      profile_picture: user.profilePicture,
-    };
-    return result;
+    const data: GetUserByUsernameBodyResponse[] = users.map((user) => {
+      return {
+        id: user.firstName,
+        first_name: user.firstName,
+        last_name: user.firstName,
+        username: user.username,
+        verified: user.verified,
+        profile_picture: user.profilePicture,
+      }
+    })
+
+    return data;
   }
 
   async updateUserService(
