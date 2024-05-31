@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { TopupService } from './topup.service';
 import { TopupRequestBody } from 'src/model/topup.model';
 import { Auth } from 'src/common/auth.decorator';
@@ -11,6 +11,12 @@ export class TopupController {
   @Post()
   async topup(@Body() request: TopupRequestBody, @Auth() user: User) {
     const req = await this.topupService.makeTopup(request, user);
+    return req;
+  }
+
+  @Get()
+  async paymentMethodController() {
+    const req = await this.topupService.getPaymentMethod();
     return req;
   }
 }

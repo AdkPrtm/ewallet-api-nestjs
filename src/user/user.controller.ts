@@ -14,7 +14,7 @@ import { UpdateUserRequestBody } from 'src/model/user.model';
 
 @Controller('/api/user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -25,9 +25,9 @@ export class UserController {
 
   @Get('/:username')
   @HttpCode(HttpStatus.OK)
-  async geUserByUsername(@Param('username') username: string) {
+  async geUserByUsername(@Param('username') username: string, @Auth() user: User) {
     const result =
-      await this.userService.getDataUserByUsernameService(username);
+      await this.userService.getDataUserByUsernameService(username, user.id);
     return result;
   }
 
