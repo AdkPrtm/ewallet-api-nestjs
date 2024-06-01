@@ -1,28 +1,18 @@
-import { DataPlan, OperatorCard, StatusEnum } from '@prisma/client';
+import { StatusEnum } from '@prisma/client';
 
-class DataPlanClass implements DataPlan {
+class DataPlanClass {
   id: string;
   name: string;
   price: number;
-  operatorCardId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  operator_card_id: string;
 }
 
-class OperatorCardClass implements OperatorCard {
+export class OperatorCardClass {
   id: string;
   name: string;
   status: StatusEnum;
   thumbnail: string;
-  DataPlan: DataPlanClass[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export class GetDataPlanResponseBody {
-  data: OperatorCard[];
-  current_page: number;
-  last_page: number;
+  data_plans: DataPlanClass[];
 }
 
 /**

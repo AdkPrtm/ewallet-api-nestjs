@@ -5,6 +5,7 @@ import { ValidationService } from 'src/common/validation.service';
 import {
   BuyDataMobileRequestBody,
   GetOperatorResponseBody,
+  OperatorCardClass,
 } from 'src/model/mobile.model';
 import { GetQueryParamRequestQuery } from 'src/model/tips.dto';
 import { generateRandomString } from 'src/utils/helper.utils';
@@ -44,8 +45,25 @@ export class MobileService {
     const totalCount = await this.prismaService.tip.count();
     const totalPages = Math.ceil(totalCount / requestOperatorMobile.limit);
 
+    const data: OperatorCardClass[] = operatorMobile.map((operatorMobile) => {
+      return {
+        id: operatorMobile.id,
+        name: operatorMobile.name,
+        status: operatorMobile.status,
+        thumbnail: operatorMobile.thumbnail,
+        data_plans: operatorMobile.DataPlan.map((dataPlan) => {
+          return {
+            id: dataPlan.id,
+            name: dataPlan.name,
+            price: dataPlan.price,
+            operator_card_id: dataPlan.operatorCardId,
+          }
+        }),
+      };
+    })
+
     return {
-      data: operatorMobile,
+      data: data,
       current_page: requestOperatorMobile.page,
       last_page: totalPages,
     };
