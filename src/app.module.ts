@@ -8,6 +8,7 @@ import { MobileModule } from './mobile/mobile.module';
 import { WebhookModule } from './webhook/webhook.module';
 import { TopupModule } from './topup/topup.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { NotificationServiceModule } from './notification-service/notification-service.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TransactionModule } from './transaction/transaction.module';
     WebhookModule,
     TopupModule,
     TransactionModule,
+    NotificationServiceModule,
   ],
 })
 export class AppModule {}

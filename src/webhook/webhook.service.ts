@@ -1,9 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma.service';
+import { NotificationService } from 'src/notification-service/notification-service.service';
 
 @Injectable()
 export class WebhookService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {}
 
   async topupStatus(invoiceId: string, status: string = 'SUCCEDED') {
     const trxId = await this.prismaService.transaction.findFirst({
@@ -22,6 +26,15 @@ export class WebhookService {
         const wallet = await prisma.wallet.findUnique({
           where: { userId: txData.userId },
         });
+
+        const user = await prisma.user.findUnique({
+          where: { id: txData.userId },
+        });
+        await this.notificationService.sendNotification(
+          'Topup Success',
+          `Your topup of Rp ${txData.amount.toLocaleString()} has been ${status.toLowerCase()}`,
+          user.tokenDevice,
+        );
 
         await prisma.wallet.update({
           where: { userId: txData.userId },

@@ -57,10 +57,10 @@ export class MobileService {
             name: dataPlan.name,
             price: dataPlan.price,
             operator_card_id: dataPlan.operatorCardId,
-          }
+          };
         }),
       };
-    })
+    });
 
     return {
       data: data,

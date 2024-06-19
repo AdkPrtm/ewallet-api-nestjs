@@ -1,10 +1,11 @@
 import {
   HttpException,
+  HttpStatus,
   Injectable,
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
@@ -29,6 +30,20 @@ export class AuthMiddleware implements NestMiddleware {
       req.user = user;
       next();
     } catch (err) {
+      if (err instanceof TokenExpiredError) {
+        const body = this.jwtService.decode(token);
+
+        const user = await this.prismaService.user.findUnique({
+          where: { username: body.username },
+        });
+        const payload = {
+          id: user.id,
+          username: user.username,
+        };
+
+        const newToken = this.jwtService.sign(payload);
+        throw new HttpException(newToken, HttpStatus.BAD_REQUEST);
+      }
       throw new UnauthorizedException('Invalid token');
     }
   }

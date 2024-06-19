@@ -94,6 +94,7 @@ export class AuthService {
           password: registerRequest.password,
           verified: true,
           profilePicture: registerRequest.profile_picture,
+          tokenDevice: registerRequest.token_device,
         },
       });
 
@@ -156,6 +157,11 @@ export class AuthService {
 
       const wallet = await prisma.wallet.findUnique({
         where: { userId: userData.id },
+      });
+
+      await prisma.user.update({
+        where: { id: userData.id },
+        data: { tokenDevice: loginRequest.token_device },
       });
 
       const payload = {

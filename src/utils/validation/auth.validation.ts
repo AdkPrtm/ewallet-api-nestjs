@@ -45,6 +45,7 @@ export class AuthValidation {
       message: 'The input must be exactly 6 digits.',
     }),
     profile_picture: z.string().optional(),
+    token_device: z.string(),
   });
 
   static readonly LOGIN: ZodType = z.object({
@@ -63,5 +64,6 @@ export class AuthValidation {
             'Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.',
         },
       ),
+    token_device: z.string(),
   });
 }

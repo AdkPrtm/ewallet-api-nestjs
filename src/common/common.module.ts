@@ -17,6 +17,7 @@ import { HttpModule } from '@nestjs/axios';
 import { MobileController } from 'src/mobile/mobile.controller';
 import { TopupController } from 'src/topup/topup.controller';
 import { TransactionController } from 'src/transaction/transaction.controller';
+import { GoogleService } from './google.service';
 
 @Global()
 @Module({
@@ -55,12 +56,19 @@ import { TransactionController } from 'src/transaction/transaction.controller';
     ValidationService,
     SupabaseService,
     MailService,
+    GoogleService,
     {
       provide: APP_FILTER,
       useClass: ErrorFilter,
     },
   ],
-  exports: [PrismaService, ValidationService, SupabaseService, MailService],
+  exports: [
+    PrismaService,
+    ValidationService,
+    SupabaseService,
+    MailService,
+    GoogleService,
+  ],
 })
 export class CommonModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
