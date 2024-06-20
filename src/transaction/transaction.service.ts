@@ -10,6 +10,7 @@ import {
   GetTransferResponseBody,
   TransferRequestBody,
 } from 'src/model/transaction.model';
+import { NotificationService } from 'src/notification-service/notification-service.service';
 import { generateRandomString } from 'src/utils/helper.utils';
 import { TipsValidation } from 'src/utils/validation/tips.validation';
 import { TransactionValidation } from 'src/utils/validation/transaction.validation';
@@ -19,6 +20,7 @@ export class TransactionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly validationService: ValidationService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async getTransactionService(
@@ -240,6 +242,11 @@ export class TransactionService {
             receiverId: receiverUser.id,
           },
         });
+        await this.notificationService.sendNotification(
+          'Receive Balance',
+          `Your balance has been received from ${senderUser.user.firstName} with amount of Rp ${requestTransfer.amount.toLocaleString()}`,
+          receiverUser.tokenDevice,
+        );
         return resSender;
       },
     );
