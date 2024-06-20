@@ -92,7 +92,7 @@ export class AuthService {
           username: registerRequest.username,
           email: registerRequest.email,
           password: registerRequest.password,
-          verified: true,
+          verified: false,
           profilePicture: registerRequest.profile_picture,
           tokenDevice: registerRequest.token_device,
         },
