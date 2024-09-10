@@ -24,8 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: cp /home/adkprtm/env-ewallet/.env /home/adkprtm/actions-runner/_work/ewallet-api-nestjs/ewallet-api-nestjs/
     - run: npm ci
     - run: npm run build --if-present
     - run: npx prisma generate
-    - run: cp /home/adkprtm/env-ewallet/.env /home/adkprtm/actions-runner/_work/ewallet-api-nestjs/ewallet-api-nestjs/
-    - run: npm run build
